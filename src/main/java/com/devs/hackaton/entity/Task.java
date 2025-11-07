@@ -41,6 +41,9 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
+    @NotBlank
+    private User owner;
+
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
