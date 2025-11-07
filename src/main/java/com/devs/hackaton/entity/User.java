@@ -44,4 +44,6 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "task_id")
     )
     private List<Task> tasks = new ArrayList<>();
+    
+    private Company companyId;
 }
