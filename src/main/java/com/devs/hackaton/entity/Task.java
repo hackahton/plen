@@ -35,13 +35,13 @@ public class Task {
     @FutureOrPresent
     private LocalDate term;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Difficulty difficulty;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private Priority priority;
 
     @ManyToMany(cascade = CascadeType.ALL)
