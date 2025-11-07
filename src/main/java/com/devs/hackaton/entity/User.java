@@ -52,5 +52,10 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Task> tasks = new ArrayList<>();
 
+    @ManyToOne
+    @JoinColumn(name = "company_id")
     private Company company;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HourRegistry> hourRegistries = new ArrayList<>();
 }

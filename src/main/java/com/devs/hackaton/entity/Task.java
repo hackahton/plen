@@ -44,10 +44,15 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
+    private User owner;
+
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "task_users",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
     private List<User> users = new ArrayList<>();
+
+    @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<HourRegistry> hourRegistries = new ArrayList<>();
 }
