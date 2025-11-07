@@ -37,12 +37,7 @@ public class User {
     )
     private List<Project> projects = new ArrayList<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_tasks",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "task_id")
-    )
+    @ManyToMany(mappedBy = "users")
     private List<Task> tasks = new ArrayList<>();
 
     private Company company;
