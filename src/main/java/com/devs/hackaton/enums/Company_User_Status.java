@@ -1,5 +1,5 @@
 package com.devs.hackaton.enums;
 
-public enum StatusUser {
+public enum Company_User_Status {
     ACTIVE, INACTIVE
 }

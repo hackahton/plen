@@ -1,7 +1,7 @@
 package com.devs.hackaton.entity;
 
 import com.devs.hackaton.enums.Role;
-import com.devs.hackaton.enums.StatusUser;
+import com.devs.hackaton.enums.Company_User_Status;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -23,5 +23,5 @@ public class User {
     private String password;
     private String cpf;
     private Role role;
-    private StatusUser status;
+    private Company_User_Status status;
 }
