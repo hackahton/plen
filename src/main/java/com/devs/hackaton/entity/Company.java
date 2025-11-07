@@ -6,6 +6,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.validator.constraints.br.CNPJ;
 
 import java.util.UUID;
 
@@ -21,6 +22,7 @@ public class Company {
     private UUID id;
 
     @Column(nullable = false)
+    @CNPJ
     private String cnpj;
 
     @Column(nullable = false)
