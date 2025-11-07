@@ -19,4 +19,8 @@ public class Tag {
 
     @Column(nullable = false)
     private String nome;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
+    private User user;
 }
