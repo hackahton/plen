@@ -53,4 +53,6 @@ public class User {
     private List<Task> tasks = new ArrayList<>();
 
     private Company company;
+
+    private List<Tag> tags;
 }

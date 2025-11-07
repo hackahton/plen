@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
