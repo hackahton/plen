@@ -29,7 +29,6 @@ public class Company {
     @Column(nullable = false)
     private String endereco;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProjectStatus status;
 
