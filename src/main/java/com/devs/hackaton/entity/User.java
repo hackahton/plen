@@ -46,12 +46,7 @@ public class User {
     @Enumerated(EnumType.STRING)
     private Company_User_Status status;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @JoinTable(
-            name = "user_projects",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "project_id")
-    )
+    @ManyToMany(mappedBy = "users")
     private List<Project> projects = new ArrayList<>();
 
     @ManyToMany(mappedBy = "users")
