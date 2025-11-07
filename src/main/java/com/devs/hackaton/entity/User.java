@@ -6,6 +6,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.Size;
 import lombok.*;
+import org.hibernate.validator.constraints.br.CPF;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +36,14 @@ public class User {
     private String password;
 
     @Column(nullable = false)
+    @CPF
     @Size(min = 11)
     private String cpf;
-    
+
+    @Enumerated(EnumType.STRING)
     private Role role;
+
+    @Enumerated(EnumType.STRING)
     private Company_User_Status status;
 
     @ManyToMany(cascade = CascadeType.ALL)
