@@ -3,6 +3,8 @@ package com.devs.hackaton.entity;
 import com.devs.hackaton.enums.Role;
 import com.devs.hackaton.enums.Company_User_Status;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 import java.util.ArrayList;
@@ -21,11 +23,21 @@ public class User {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column
+    @Column(nullable = false)
     private String name;
+
+    @Column(nullable = false)
+    @Email
     private String email;
+
+    @Column(nullable = false)
+    @Size(min = 6)
     private String password;
+
+    @Column(nullable = false)
+    @Size(min = 11)
     private String cpf;
+    
     private Role role;
     private Company_User_Status status;
 
