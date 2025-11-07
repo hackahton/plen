@@ -5,13 +5,14 @@ import com.devs.hackaton.enums.Priority;
 import com.devs.hackaton.enums.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.antlr.v4.runtime.misc.NotNull;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,21 +22,32 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Task {
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private UUID Id;
 
-    @NotNull
+    @NotBlank
     private String title;
 
-    @NotNull
+    @NotBlank
     private String description;
 
     @FutureOrPresent
     private LocalDate term;
+
+    @Enumerated
     private Difficulty difficulty;
+
+    @Enumerated
     private TaskStatus status;
+
+    @Enumerated
     private Priority priority;
 
-    @ManyToMany
-    private List<User> users;
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(
+            name = "task_users",
+            joinColumns = @JoinColumn(name = "task_id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users = new ArrayList<>();
 }
