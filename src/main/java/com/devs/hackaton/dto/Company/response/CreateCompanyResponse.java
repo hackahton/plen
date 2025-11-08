@@ -6,7 +6,7 @@ import java.util.UUID;
 
 @Builder
 public record CreateCompanyResponse(
-        UUID id,
+        String id,
         String cnpj,
         String endereco
 ) {
