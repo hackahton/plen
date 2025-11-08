@@ -13,6 +13,8 @@ public class UserMapper {
                 .email(request.email())
                 .role(request.role())
                 .status(request.status())
+                .cpf(request.cpf())
+                .password(request.password())
                 .build();
     }
 

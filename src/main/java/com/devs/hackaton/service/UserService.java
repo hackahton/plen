@@ -39,7 +39,7 @@ public class UserService {
         user.setCompany(company);
         user.setStatus(Company_User_Status.ACTIVE);
 
-        userRepository.save(UserMapper.toEntity(request));
+        userRepository.save(user);
 
         return UserMapper.toResponse(user);
     }
