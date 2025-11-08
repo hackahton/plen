@@ -39,6 +39,9 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
+    @OneToMany
+    private List<String> comentario;
+
     @NotBlank
     private UUID owner;
 

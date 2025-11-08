@@ -1,9 +1,6 @@
 package com.devs.hackaton.service;
 
-import com.devs.hackaton.dto.Task.request.AtribuicaoRequest;
-import com.devs.hackaton.dto.Task.request.Mudanca;
-import com.devs.hackaton.dto.Task.request.MudancaRequest;
-import com.devs.hackaton.dto.Task.request.TaskRequest;
+import com.devs.hackaton.dto.Task.request.*;
 import com.devs.hackaton.dto.Task.response.TaskResponse;
 import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.entity.User;
@@ -79,5 +76,14 @@ public class TaskService {
 
         taskRepository.save(task);
         userRepository.save(user);
+    }
+
+    public void fazerComentario(ComentarioRequest request){
+        Task task = taskRepository.findById(request.idTask())
+                .orElseThrow(() -> new IllegalArgumentException("Task nao encontrada"));
+
+        task.getComentario().add(request.comentario());
+
+        taskRepository.save(task);
     }
 }

@@ -58,4 +58,7 @@ public class User {
 
     @ManyToMany(mappedBy = "users")
     private List<Tag> tags;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Comentario> comentarios = new ArrayList<>();
 }
