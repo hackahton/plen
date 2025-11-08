@@ -47,8 +47,6 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private Priority priority;
 
-    private User owner;
-
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "task_users",
