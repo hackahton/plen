@@ -1,5 +1,7 @@
 package com.devs.hackaton.service;
 
+import com.devs.hackaton.dto.Task.response.ProjectReportResponse;
+import com.devs.hackaton.dto.Task.response.UserReportResponse;
 import com.devs.hackaton.dto.UserDTOs.request.UpdatePassword;
 import com.devs.hackaton.dto.UserDTOs.request.UpdateUserTag;
 import com.devs.hackaton.dto.UserDTOs.request.UserRequest;
@@ -7,6 +9,7 @@ import com.devs.hackaton.dto.UserDTOs.response.CreateUserResponse;
 import com.devs.hackaton.dto.UserDTOs.response.FindUserResponse;
 import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.Tag;
+import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.entity.User;
 import com.devs.hackaton.enums.Company_User_Status;
 import com.devs.hackaton.exception.User.ExistsUserException;
@@ -105,4 +108,12 @@ public class UserService {
     public User findFirstByStatus(Company_User_Status status){
         return userRepository.findFirstByStatus(status);
     }
+
+    public List<UserReportResponse> UserReport(UUID id){
+        return userRepository.findAllByOwner(id).stream()
+                .map(n -> new UserReportResponse(n.getTitle(),
+                        n.getDescription(),
+                        n.getStatus())).toList();
+    }
+
 }
