@@ -3,14 +3,13 @@ package com.devs.hackaton.entity;
 import com.devs.hackaton.enums.Priority;
 import com.devs.hackaton.enums.ProjectStatus;
 import jakarta.persistence.*;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
