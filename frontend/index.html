@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plen - Sistema de Gestão de Projetos</title>
+    
+    <!-- Phosphor Icons -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="styles/main.css">
+    <link rel="stylesheet" href="styles/dashboard.css">
+    <link rel="stylesheet" href="styles/components.css">
+</head>
+<body>
+    
+    <!-- Tela de Login (exibida quando não autenticado) -->
+    <div id="loginScreen" class="login-screen">
+        <div class="login-container">
+            <div class="login-card">
+                <div class="login-header">
+                    <i class="ph ph-briefcase" style="font-size: 48px; color: #6366f1;"></i>
+                    <h1>Plen</h1>
+                    <p>Sistema de Gestão de Projetos</p>
+                </div>
+
+                <form id="loginForm" class="login-form">
+                    <div class="form-group">
+                        <label for="loginEmail">
+                            <i class="ph ph-envelope"></i>
+                            Email
+                        </label>
+                        <input 
+                            type="email" 
+                            id="loginEmail" 
+                            name="email" 
+                            placeholder="seu@email.com" 
+                            required
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="loginPassword">
+                            <i class="ph ph-lock"></i>
+                            Senha
+                        </label>
+                        <input 
+                            type="password" 
+                            id="loginPassword" 
+                            name="password" 
+                            placeholder="••••••••" 
+                            required
+                        >
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block">
+                        <i class="ph ph-sign-in"></i>
+                        Entrar
+                    </button>
+
+                    <div class="login-footer">
+                        <p>Não tem uma conta? <a href="#" id="showRegisterLink">Criar conta de administrador</a></p>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Aplicação Principal (oculta até login) -->
+    <div id="mainApp" class="main-app" style="display: none;">
+        
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="ph ph-briefcase"></i>
+                <h2>Plen</h2>
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="ph ph-list"></i>
+                </button>
+            </div>
+
+            <nav class="sidebar-nav">
+                <a href="#dashboard" class="nav-item active" data-page="dashboard">
+                    <i class="ph ph-house"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="#projects" class="nav-item" data-page="projects">
+                    <i class="ph ph-folder"></i>
+                    <span>Projetos</span>
+                </a>
+                <a href="#tasks" class="nav-item" data-page="tasks">
+                    <i class="ph ph-check-square"></i>
+                    <span>Tarefas</span>
+                </a>
+                <a href="#teams" class="nav-item" data-page="teams">
+                    <i class="ph ph-users"></i>
+                    <span>Equipe</span>
+                </a>
+                <a href="#reports" class="nav-item" data-page="reports">
+                    <i class="ph ph-chart-bar"></i>
+                    <span>Relatórios</span>
+                </a>
+                <a href="#settings" class="nav-item" data-page="settings">
+                    <i class="ph ph-gear"></i>
+                    <span>Configurações</span>
+                </a>
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="ph ph-user"></i>
+                    </div>
+                    <div class="user-details">
+                        <p class="user-name" id="userName">Usuário</p>
+                        <p class="user-role" id="userRole">Admin</p>
+                    </div>
+                </div>
+                <button class="btn-logout" id="logoutBtn">
+                    <i class="ph ph-sign-out"></i>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            
+            <!-- Header -->
+            <header class="content-header">
+                <div class="header-left">
+                    <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                        <i class="ph ph-list"></i>
+                    </button>
+                    <h1 id="pageTitle">Dashboard</h1>
+                </div>
+                <div class="header-right">
+                    <button class="btn btn-icon" id="notificationsBtn">
+                        <i class="ph ph-bell"></i>
+                        <span class="badge">3</span>
+                    </button>
+                    <button class="btn btn-primary" id="newProjectBtn">
+                        <i class="ph ph-plus"></i>
+                        Novo Projeto
+                    </button>
+                </div>
+            </header>
+
+            <!-- Pages Container -->
+            <div class="pages-container">
+                
+                <!-- Dashboard Page -->
+                <div id="dashboardPage" class="page active">
+                    
+                    <!-- Stats Cards -->
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #e0e7ff; color: #6366f1;">
+                                <i class="ph ph-folder"></i>
+                            </div>
+                            <div class="stat-content">
+                                <p class="stat-label">Projetos Ativos</p>
+                                <h3 class="stat-value" id="activeProjects">0</h3>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #fef3c7; color: #f59e0b;">
+                                <i class="ph ph-check-square"></i>
+                            </div>
+                            <div class="stat-content">
+                                <p class="stat-label">Tarefas Pendentes</p>
+                                <h3 class="stat-value" id="pendingTasks">0</h3>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #d1fae5; color: #10b981;">
+                                <i class="ph ph-users"></i>
+                            </div>
+                            <div class="stat-content">
+                                <p class="stat-label">Membros da Equipe</p>
+                                <h3 class="stat-value" id="teamMembers">0</h3>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon" style="background: #dbeafe; color: #3b82f6;">
+                                <i class="ph ph-clock"></i>
+                            </div>
+                            <div class="stat-content">
+                                <p class="stat-label">Horas Registradas</p>
+                                <h3 class="stat-value" id="totalHours">0h</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Charts Section -->
+                    <div class="charts-grid">
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Tarefas por Status</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="tasksStatusChart"></canvas>
+                            </div>
+                        </div>
+
+                        <div class="chart-card">
+                            <div class="card-header">
+                                <h3>Projetos por Mês</h3>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="projectsChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Recent Projects -->
+                    <div class="section">
+                        <div class="section-header">
+                            <h2>Projetos Recentes</h2>
+                            <a href="#projects" class="link">Ver todos</a>
+                        </div>
+                        <div id="recentProjectsList" class="projects-list">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- Projects Page -->
+                <div id="projectsPage" class="page">
+                    <div class="page-header">
+                        <div class="filters">
+                            <input type="text" id="projectSearch" placeholder="Buscar projetos..." class="search-input">
+                            <select id="projectStatusFilter" class="filter-select">
+                                <option value="">Todos os Status</option>
+                                <option value="PLANEJAMENTO">Planejamento</option>
+                                <option value="EM_ANDAMENTO">Em Andamento</option>
+                                <option value="CONCLUIDO">Concluído</option>
+                                <option value="CANCELADO">Cancelado</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div id="projectsGrid" class="projects-grid">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Tasks Page -->
+                <div id="tasksPage" class="page">
+                    <div class="page-header">
+                        <div class="view-toggles">
+                            <button class="btn btn-icon active" data-view="kanban">
+                                <i class="ph ph-columns"></i>
+                            </button>
+                            <button class="btn btn-icon" data-view="list">
+                                <i class="ph ph-list"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div id="tasksKanban" class="kanban-board">
+                        <!-- Kanban columns populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Teams Page -->
+                <div id="teamsPage" class="page">
+                    <div class="section-header">
+                        <h2>Membros da Equipe</h2>
+                        <button class="btn btn-primary" id="addMemberBtn">
+                            <i class="ph ph-plus"></i>
+                            Adicionar Membro
+                        </button>
+                    </div>
+                    <div id="teamMembersList" class="team-list">
+                        <!-- Populated by JS -->
+                    </div>
+                </div>
+
+                <!-- Reports Page -->
+                <div id="reportsPage" class="page">
+                    <h2>Relatórios</h2>
+                    <p>Em desenvolvimento...</p>
+                </div>
+
+                <!-- Settings Page -->
+                <div id="settingsPage" class="page">
+                    <h2>Configurações</h2>
+                    <p>Em desenvolvimento...</p>
+                </div>
+
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal: Register Admin -->
+    <div class="modal" id="registerModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Criar Conta de Administrador</h2>
+                <button class="btn-close" data-close="registerModal">
+                    <i class="ph ph-x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" name="cpf" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Senha</label>
+                        <input type="password" name="password" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" data-close="registerModal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Criar Conta</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: New Project -->
+    <div class="modal" id="newProjectModal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Novo Projeto</h2>
+                <button class="btn-close" data-close="newProjectModal">
+                    <i class="ph ph-x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="newProjectForm">
+                    <div class="form-group">
+                        <label>Nome do Projeto</label>
+                        <input type="text" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Descrição</label>
+                        <textarea name="description" rows="4"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Início</label>
+                        <input type="date" name="startDate" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Término</label>
+                        <input type="date" name="endDate" required>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" class="btn btn-secondary" data-close="newProjectModal">Cancelar</button>
+                        <button type="submit" class="btn btn-primary">Criar Projeto</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="scripts/config.js"></script>
+    <script src="scripts/auth.js"></script>
+    <script src="scripts/api.js"></script>
+    <script src="scripts/dashboard.js"></script>
+    <script src="scripts/projects.js"></script>
+    <script src="scripts/tasks.js"></script>
+    <script src="scripts/teams.js"></script>
+    <script src="scripts/main.js"></script>
+
+</body>
+</html>
