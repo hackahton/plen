@@ -10,8 +10,6 @@ import com.devs.hackaton.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
-import java.util.UUID;
 
 
 @Service
@@ -23,7 +21,7 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public void criarTask(TaskRequest request){
+    public TaskResponse criarTask(TaskRequest request){
         User user = userRepository.findById(request.user_id())
                 .orElseThrow(() -> new IllegalArgumentException("Nao encontrado"));
 
@@ -39,6 +37,8 @@ public class TaskService {
         task.setStatus(TaskStatus.PENDENTE);
         task.setPriority(request.priority());
         taskRepository.save(task);
+
+        return new TaskResponse(task.getId(), task.getTitle(), task.getDescription(), task.getTerm(), task.getDifficulty(), task.getStatus(), task.getPriority());
 
     }
 
