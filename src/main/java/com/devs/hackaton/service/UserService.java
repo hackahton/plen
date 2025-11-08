@@ -1,6 +1,7 @@
 package com.devs.hackaton.service;
 
 import com.devs.hackaton.dto.Task.response.ProjectReportResponse;
+import com.devs.hackaton.dto.Task.response.TaskResponse;
 import com.devs.hackaton.dto.Task.response.UserReportResponse;
 import com.devs.hackaton.dto.UserDTOs.request.UpdatePassword;
 import com.devs.hackaton.dto.UserDTOs.request.UpdateUserTag;
@@ -212,4 +213,6 @@ public class UserService {
             throw new BadCredentialsException("Email ou senha incorretos.");
         }
     }
+
+
 }

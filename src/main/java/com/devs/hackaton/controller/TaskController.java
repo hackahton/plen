@@ -4,11 +4,15 @@ import com.devs.hackaton.dto.Task.request.AtribuicaoRequest;
 import com.devs.hackaton.dto.Task.request.MudancaRequest;
 import com.devs.hackaton.dto.Task.request.TaskRequest;
 import com.devs.hackaton.dto.Task.response.TaskResponse;
+import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/task")
@@ -47,4 +51,15 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possivel atribuir uma task");
         }
     }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> getTasksByUser(@PathVariable UUID userId) {
+        try {
+            return ResponseEntity.ok(taskService.listaUsuario(userId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possível buscar as tarefas");
+        }
+    }
+
+
 }

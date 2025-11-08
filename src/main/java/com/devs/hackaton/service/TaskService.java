@@ -38,21 +38,15 @@ public class TaskService {
         task.setDifficulty(request.difficulty());
         task.setStatus(TaskStatus.PENDENTE);
         task.setPriority(request.priority());
-        task.setOwner(user.getId());
-
-        try{
-            taskRepository.save(task);
-            return new TaskResponse(task.getId(),
-                    task.getTitle(),
-                    task.getDescription(),
-                    task.getTerm(),
-                    task.getDifficulty(),
-                    task.getStatus(),
-                    task.getPriority());
-
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
+        task.setOwner(user.getId()); // Define o owner como o ID do usuário que criou a tarefa
+        taskRepository.save(task);
+        return new TaskResponse(task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getTerm(),
+                task.getDifficulty(),
+                task.getStatus(),
+                task.getPriority());
 
     }
 
@@ -72,11 +66,7 @@ public class TaskService {
             }
         }
 
-        try{
-            taskRepository.save(task);
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
+        taskRepository.save(task);
     }
 
     public void atribuirTask(AtribuicaoRequest request){
@@ -86,18 +76,15 @@ public class TaskService {
         User user = userRepository.findById(request.idUser())
                 .orElseThrow(() -> new IllegalArgumentException("User nao encontrado"));
 
-        task.getUsers().add(userRepository.findFirstByStatus(Company_User_Status.ACTIVE));
-
+        if (user.getStatus().equals(Company_User_Status.INACTIVE)){
+            task.getUsers().add(userRepository.findFirstByStatus(Company_User_Status.ACTIVE));
+        }
 
         task.getUsers().add(user);
         user.getTasks().add(task);
-        try{
-            taskRepository.save(task);
-            userRepository.save(user);
-        } catch (Exception e) {
-            throw new RuntimeException();
-        }
 
+        taskRepository.save(task);
+        userRepository.save(user);
     }
 
     public void fazerComentario(ComentarioRequest request){
@@ -107,6 +94,14 @@ public class TaskService {
         task.getComentario().add(request.comentario());
 
         taskRepository.save(task);
+    }
+
+    public List<Task> listaUsuario(UUID id){
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Nao encontrado"));
+
+        return taskRepository.findAllByUsersId(user.getId());
+
     }
 
 }
