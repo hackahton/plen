@@ -101,4 +101,8 @@ public class UserService {
     public User findUserEntityByStatusAndId(UUID id, Company_User_Status status){
         return userRepository.findUserByIdAndStatus(id, status);
     }
+
+    public User findFirstByStatus(Company_User_Status status){
+        return userRepository.findFirstByStatus(status);
+    }
 }
