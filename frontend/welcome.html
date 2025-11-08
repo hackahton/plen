@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bem-vindo ao Plen</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 2rem;
+        }
+        
+        .container {
+            background: white;
+            border-radius: 16px;
+            padding: 3rem;
+            max-width: 600px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        
+        h1 {
+            color: #6366f1;
+            font-size: 32px;
+            margin-bottom: 1rem;
+        }
+        
+        p {
+            color: #6b7280;
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+        
+        .steps {
+            margin: 2rem 0;
+        }
+        
+        .step {
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            border-left: 4px solid #6366f1;
+        }
+        
+        .step h3 {
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #6366f1;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        .btn:hover {
+            background: #4f46e5;
+            transform: translateY(-2px);
+        }
+        
+        .alert {
+            background: #fef3c7;
+            border-left: 4px solid #f59e0b;
+            padding: 1rem;
+            border-radius: 8px;
+            margin: 2rem 0;
+        }
+        
+        .alert strong {
+            color: #92400e;
+        }
+        
+        code {
+            background: #1f2937;
+            color: #10b981;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 Bem-vindo ao Plen</h1>
+        <p>Sistema de Gestão de Projetos e Tarefas</p>
+        
+        <div class="alert">
+            <strong>⚠️ Importante:</strong> Certifique-se de que o backend Spring Boot está rodando na porta <code>8080</code>
+        </div>
+        
+        <div class="steps">
+            <div class="step">
+                <h3>1️⃣ Primeiro Acesso</h3>
+                <p>Clique em <strong>"Criar conta de administrador"</strong> na tela de login</p>
+            </div>
+            
+            <div class="step">
+                <h3>2️⃣ Preencha os Dados</h3>
+                <p>
+                    • Nome completo<br>
+                    • Email<br>
+                    • CPF (formato: 000.000.000-00)<br>
+                    • Senha
+                </p>
+            </div>
+            
+            <div class="step">
+                <h3>3️⃣ Faça Login</h3>
+                <p>Use o email e senha que você acabou de criar</p>
+            </div>
+            
+            <div class="step">
+                <h3>4️⃣ Explore o Sistema</h3>
+                <p>
+                    • Dashboard com estatísticas<br>
+                    • Criar e gerenciar projetos<br>
+                    • Quadro Kanban de tarefas<br>
+                    • Gerenciar equipe
+                </p>
+            </div>
+        </div>
+        
+        <a href="index.html" class="btn">Acessar o Sistema</a>
+        
+        <p style="margin-top: 2rem; font-size: 14px; color: #9ca3af;">
+            <strong>Problemas?</strong> Verifique o console do navegador (F12) e certifique-se de que o backend está rodando.
+        </p>
+    </div>
+</body>
+</html>

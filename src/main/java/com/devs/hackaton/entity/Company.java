@@ -1,0 +1,48 @@
+package com.devs.hackaton.entity;
+
+import com.devs.hackaton.enums.Company_User_Status;
+import com.devs.hackaton.enums.ProjectStatus;
+import jakarta.persistence.*;
+import lombok.*;
+import org.hibernate.validator.constraints.br.CNPJ;
+
+import javax.swing.*;
+import java.util.List;
+import java.util.UUID;
+
+@Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+public class Company {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
+    private UUID id;
+
+    @Column(nullable = false)
+    private String cnpj;
+
+    @Column(nullable = false)
+    private String name;
+
+    @Column(nullable = false)
+    private String address;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private Company_User_Status status;
+
+    @ManyToMany
+    @JoinTable(
+            name = "company_project",
+            joinColumns = @JoinColumn(name = "company_id"),
+            inverseJoinColumns = @JoinColumn(name = "project_id")
+    )
+    private List<Project> projects;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<User> users;
+}
