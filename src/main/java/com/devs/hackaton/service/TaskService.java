@@ -43,9 +43,6 @@ public class TaskService {
     }
 
     public void mudarStatus(MudancaRequest request){
-        User user = userRepository.findById(request.idUser())
-                .orElseThrow(() -> new IllegalArgumentException("Nao encontrado"));
-
         Task task = taskRepository.findById(request.idTask())
                 .orElseThrow(()-> new IllegalArgumentException("Nao encontrado"));
 
