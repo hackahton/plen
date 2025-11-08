@@ -1,4 +1,4 @@
-package com.devs.hackaton.exception;
+package com.devs.hackaton.exception.Company;
 
 public class CreateCompanyRequestIsNullException extends RuntimeException {
     public CreateCompanyRequestIsNullException() {

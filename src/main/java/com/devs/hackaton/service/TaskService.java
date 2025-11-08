@@ -25,7 +25,7 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public TaskResponse criarTask(TaskRequest request){
+    public void criarTask(TaskRequest request){
         User user = userRepository.findById(request.user_id())
                 .orElseThrow(() -> new IllegalArgumentException("Nao encontrado"));
 
@@ -42,7 +42,6 @@ public class TaskService {
         task.setPriority(request.priority());
         taskRepository.save(task);
 
-        return new TaskResponse();
     }
 
     public void editarTask(MudancaRequest request){

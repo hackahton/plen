@@ -1,9 +1,13 @@
 package com.devs.hackaton.dto.Company.response;
 
 import com.devs.hackaton.enums.Company_User_Status;
+import lombok.Builder;
 
+import java.util.UUID;
+
+@Builder
 public record CompanyResponse(
-        String id,
+        UUID id,
         String cnpj,
         String nome,
         String endereco,
