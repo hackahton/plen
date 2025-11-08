@@ -7,10 +7,7 @@ import com.devs.hackaton.dto.Task.request.TaskRequest;
 import com.devs.hackaton.dto.Task.response.TaskResponse;
 import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.entity.User;
-import com.devs.hackaton.enums.Difficulty;
-import com.devs.hackaton.enums.Role;
-import com.devs.hackaton.enums.TaskStatus;
-import com.devs.hackaton.enums.TipoMundaca;
+import com.devs.hackaton.enums.*;
 import com.devs.hackaton.repository.TaskRepository;
 import com.devs.hackaton.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -74,8 +71,13 @@ public class TaskService {
         User user = userRepository.findById(request.idUser())
                 .orElseThrow(() -> new IllegalArgumentException("User nao encontrado"));
 
+        if (user.getStatus().equals(Company_User_Status.INACTIVE)){
+            task.getUsers().add(userRepository.findFirst(Company_User_Status.ACTIVE));
+        }
+
         task.getUsers().add(user);
         user.getTasks().add(task);
+
         taskRepository.save(task);
         userRepository.save(user);
     }
