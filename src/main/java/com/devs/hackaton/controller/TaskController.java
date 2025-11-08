@@ -8,10 +8,7 @@ import com.devs.hackaton.service.TaskService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/task")
@@ -21,19 +18,19 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<?> createTask(TaskRequest request) {
-        taskService.criarTask(request);
-        return ResponseEntity.status(HttpStatus.OK).body("Criado");
+    public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest request) {
+        TaskResponse response = taskService.criarTask(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/editar")
-    public ResponseEntity<?> editTask(MudancaRequest request) {
+    public ResponseEntity<?> editTask(@RequestBody MudancaRequest request) {
         taskService.editarTask(request);
         return ResponseEntity.status(HttpStatus.OK).body("Editado");
     }
 
     @PutMapping("/atribuicao")
-    public ResponseEntity<?> atribuicaoTask(AtribuicaoRequest request) {
+    public ResponseEntity<?> atribuicaoTask(@RequestBody AtribuicaoRequest request) {
         taskService.atribuirTask(request);
         return ResponseEntity.status(HttpStatus.OK).body("Atribuido");
     }

@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
                         .requestMatchers(ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED).permitAll()
-                        .anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .headers(headers -> headers.frameOptions(
                         HeadersConfigurer.FrameOptionsConfig::sameOrigin) // Configuração para permitir o uso do console do H2
                 )

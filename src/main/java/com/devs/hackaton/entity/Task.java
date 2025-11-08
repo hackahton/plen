@@ -6,6 +6,7 @@ import com.devs.hackaton.enums.TaskStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -42,7 +43,7 @@ public class Task {
     @OneToMany(mappedBy = "comentario")
     private List<Comentario> comentario;
 
-    @NotBlank
+    
     private UUID owner;
 
     @Enumerated(EnumType.STRING)

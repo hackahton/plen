@@ -23,7 +23,7 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public void criarTask(TaskRequest request){
+    public TaskResponse criarTask(TaskRequest request){
         User user = userRepository.findById(request.user_id())
                 .orElseThrow(() -> new IllegalArgumentException("Nao encontrado"));
 
@@ -38,7 +38,15 @@ public class TaskService {
         task.setDifficulty(request.difficulty());
         task.setStatus(TaskStatus.PENDENTE);
         task.setPriority(request.priority());
+        task.setOwner(user.getId()); // Define o owner como o ID do usuário que criou a tarefa
         taskRepository.save(task);
+        return new TaskResponse(task.getId(),
+                task.getTitle(),
+                task.getDescription(),
+                task.getTerm(),
+                task.getDifficulty(),
+                task.getStatus(),
+                task.getPriority());
 
     }
 
