@@ -1,24 +1,13 @@
 package com.devs.hackaton.service;
 
-import com.devs.hackaton.entity.Project;
-import com.devs.hackaton.entity.User;
-import com.devs.hackaton.enums.Role;
-import com.devs.hackaton.repository.ProjectRepository;
-import com.devs.hackaton.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.stereotype.Service;
-import org.springframework.web.server.ResponseStatusException;
+import com.devs.hackaton.entity.Project; import com.devs.hackaton.entity.User; import com.devs.hackaton.enums.Role; import com.devs.hackaton.repository.ProjectRepository; import com.devs.hackaton.repository.UserRepository; import org.springframework.beans.factory.annotation.Autowired; import org.springframework.http.HttpStatus; import org.springframework.stereotype.Service; import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-import java.util.Optional;
-import java.util.UUID;
+import java.util.List; import java.util.Optional; import java.util.UUID;
 
-@Service
-public class ProjectService {
+@Service public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final UserRepository userRepository; // Adicionado para validar associações
+    private final UserRepository userRepository;
 
     @Autowired
     public ProjectService(ProjectRepository projectRepository, UserRepository userRepository) {
@@ -31,51 +20,69 @@ public class ProjectService {
         if (project.getId() == null) {
             if (userRole == Role.COLABORADOR) {
                 throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                        "Colaboradores não podem criar novos projetos. Somente GESTOR ou SUPERVISOR.");
+                        "Collaborators cannot create new projects. Only GESTOR or SUPERVISOR.");
             }
             return projectRepository.save(project);
         }
 
-
         Optional<Project> existingProjectOpt = projectRepository.findById(project.getId());
 
         if (existingProjectOpt.isPresent()) {
-            Project existingProject = existingProjectOpt.get();
 
-            if (existingProject.getProjectStatus() != project.getProjectStatus()) {
-
-
-                if (userRole == Role.COLABORADOR) {
-                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                            "Usuário com função " + userRole + " não tem permissão para alterar o status do projeto.");
-                }
+            if (userRole != Role.SUPERVISOR) {
+                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                        "Only the Supervisor can alter project data and status.");
             }
 
             return projectRepository.save(project);
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "Projeto com ID " + project.getId() + " não encontrado.");
+                    "Project with ID " + project.getId() + " not found.");
         }
     }
 
     public Project associateUser(UUID projectId, UUID userId, Role userRole) {
-        if (userRole == Role.COLABORADOR) {
+        if (userRole != Role.SUPERVISOR) {
             throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Somente GESTOR ou SUPERVISOR podem associar usuários a um projeto.");
+                    "Only the Supervisor can associate users with a project.");
         }
 
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Projeto não encontrado."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
 
         User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found."));
 
         if (project.getUsers().contains(user)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Usuário já está associado a este projeto.");
+            throw new ResponseStatusException(HttpStatus.CONFLICT, "User is already associated with this project.");
         }
 
         project.getUsers().add(user);
         user.getProjects().add(project);
+
+        return projectRepository.save(project);
+    }
+
+    public Project transferProjectResponsibility(UUID projectId, UUID newManagerId, Role requestUserRole) {
+        if (requestUserRole != Role.SUPERVISOR) {
+            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
+                    "Only the SUPERVISOR can transfer project responsibility.");
+        }
+
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Project not found."));
+
+        User newManager = userRepository.findById(newManagerId)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "New Manager/Supervisor not found."));
+
+        if (newManager.getRole() != Role.GESTOR && newManager.getRole() != Role.SUPERVISOR) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "The new responsible must be a GESTOR or SUPERVISOR.");
+        }
+
+        if (!project.getUsers().contains(newManager)) {
+            project.getUsers().add(newManager);
+            newManager.getProjects().add(project);
+        }
 
         return projectRepository.save(project);
     }
