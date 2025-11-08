@@ -1,11 +1,9 @@
 package com.devs.hackaton.dto.Task.request;
 
-
-import java.util.List;
 import java.util.UUID;
 
-public record MudancaRequest(
+public record AtribuicaoRequest(
         UUID idTask,
-        List<Mudanca> mudancas
+        UUID idUser
 ) {
 }
