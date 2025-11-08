@@ -40,7 +40,7 @@ public class Task {
     private TaskStatus status;
 
     @NotBlank
-    private User owner;
+    private UUID owner;
 
     @Enumerated(EnumType.STRING)
     private Priority priority;
@@ -50,8 +50,8 @@ public class Task {
             name = "task_users",
             joinColumns = @JoinColumn(name = "task_id"),
             inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
 
     @OneToMany(mappedBy = "task", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<HourRegistry> hourRegistries = new ArrayList<>();
+    private final List<HourRegistry> hourRegistries = new ArrayList<>();
 }

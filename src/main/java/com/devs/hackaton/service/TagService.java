@@ -22,7 +22,7 @@ public class TagService {
     public TagResponse createTag(CreateTag request) {
         log.info("Creating tag: {}", request);
 
-        if (tagRepository.findByName(request.nome()).isPresent()) {
+        if (tagRepository.findByName(request.name()).isPresent()) {
             log.error("Tag already exists");
             throw new IllegalArgumentException("Tag already exists");
         }
