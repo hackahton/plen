@@ -22,4 +22,10 @@ public class GlobalHandlerException {
         String message = "Dados inválidos - " + errors;
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(message);
     }
+
+    //Utilizado no CompanyService quando request para criar empresa estiver nulo
+    @ExceptionHandler(CreateCompanyRequestIsNullException.class)
+    public ResponseEntity<String> handleCreateCompanyRequestIsNullException(CreateCompanyRequestIsNullException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
 }

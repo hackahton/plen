@@ -5,7 +5,7 @@ import com.devs.hackaton.dto.Company.response.CreateCompanyResponse;
 import com.devs.hackaton.entity.Company;
 
 public class CompanyMapper {
-    public Company toCompanyEntity(CreateCompanyRequest request){
+    public static Company toCompanyEntity(CreateCompanyRequest request){
         return Company.builder()
                 .cnpj(request.cnpj())
                 .nome(request.nome())
@@ -13,7 +13,7 @@ public class CompanyMapper {
                 .build();
     }
 
-    public CreateCompanyResponse toCreateCompanyResponse(Company company){
+    public static CreateCompanyResponse toCreateCompanyResponse(Company company){
         return new CreateCompanyResponse(
                 company.getId(),
                 company.getCnpj(),
