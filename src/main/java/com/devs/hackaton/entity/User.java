@@ -52,5 +52,9 @@ public class User {
     @ManyToMany(mappedBy = "users")
     private List<Task> tasks = new ArrayList<>();
 
+    @ManyToOne(cascade = CascadeType.ALL)
     private Company company;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Tag> tags = new ArrayList<>();
 }

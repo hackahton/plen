@@ -3,6 +3,7 @@ package com.devs.hackaton.entity;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -20,7 +21,7 @@ public class Tag {
     @Column(nullable = false)
     private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+   @ManyToMany
+   @JoinTable(name = "tag_user", joinColumns = @JoinColumn(name = "tag_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
+    private List<User> users;
 }
