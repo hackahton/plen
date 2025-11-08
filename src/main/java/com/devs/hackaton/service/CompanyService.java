@@ -1,10 +1,13 @@
 package com.devs.hackaton.service;
 
 import com.devs.hackaton.dto.Company.request.CreateCompanyRequest;
+import com.devs.hackaton.dto.Company.request.EditCompanyRequest;
+import com.devs.hackaton.dto.Company.response.CompanyResponse;
 import com.devs.hackaton.dto.Company.response.CreateCompanyResponse;
 import com.devs.hackaton.entity.Company;
-import com.devs.hackaton.exception.CompanyAlreadyExistException;
-import com.devs.hackaton.exception.CreateCompanyRequestIsNullException;
+import com.devs.hackaton.exception.Company.CompanyAlreadyExistException;
+import com.devs.hackaton.exception.Company.CompanyNotFoundException;
+import com.devs.hackaton.exception.Company.EditCompanyRequestsNullException;
 import com.devs.hackaton.repository.CompanyRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,6 +38,30 @@ public class CompanyService {
         log.info("Empresa salvo com sucesso. ID: {}",newCompany.getId());
         return new CreateCompanyResponse(newCompany.getId(),newCompany.getCnpj(),newCompany.getEndereco());
     }
+
+    public CompanyResponse editCompany(String idCompany,EditCompanyRequest request){
+        Company company = companyRepository.findById(idCompany).orElseThrow(CompanyNotFoundException::new);
+
+        if(Objects.isNull(request)){
+            throw new EditCompanyRequestsNullException();
+        }
+
+        if (request.nome().trim() != null){
+            company.setNome(request.nome());
+        }
+        if(request.endereco().trim() != null){
+            company.setEndereco(request.endereco());
+        }
+        if(request.status() != null){
+            company.setStatus(request.status());
+        }
+
+        companyRepository.save(company);
+
+        return new CompanyResponse(company.getId(),company.getCnpj(), company.getNome(),company.getEndereco(),company.getStatus());
+    }
+
+
 
 
 }

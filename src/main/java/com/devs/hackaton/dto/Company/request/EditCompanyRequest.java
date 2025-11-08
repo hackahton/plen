@@ -1,10 +1,10 @@
 package com.devs.hackaton.dto.Company.request;
 
-import jakarta.validation.constraints.NotBlank;
+import com.devs.hackaton.enums.Company_User_Status;
 
-public class EditCompanyRequest {
-
-    String nome;
-
-    String endereco;
+public record EditCompanyRequest(
+        String nome,
+        String endereco,
+        Company_User_Status status
+) {
 }
