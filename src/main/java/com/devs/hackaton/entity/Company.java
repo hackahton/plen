@@ -2,12 +2,10 @@ package com.devs.hackaton.entity;
 
 import com.devs.hackaton.enums.ProjectStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +14,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Company {
 
     @Id
@@ -25,6 +24,9 @@ public class Company {
     @Column(nullable = false)
     @CNPJ
     private String cnpj;
+
+    @Column(nullable = false)
+    private String nome;
 
     @Column(nullable = false)
     private String endereco;
