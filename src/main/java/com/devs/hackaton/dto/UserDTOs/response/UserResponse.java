@@ -15,8 +15,6 @@ public record UserResponse(
         UUID id,
         String name,
         String email,
-        String password,
-        String cpf,
         Role role,
         Company_User_Status status,
         List<Project> projects,

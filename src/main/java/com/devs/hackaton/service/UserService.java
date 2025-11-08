@@ -3,6 +3,7 @@ package com.devs.hackaton.service;
 import com.devs.hackaton.dto.UserDTOs.request.UserRequest;
 import com.devs.hackaton.dto.UserDTOs.response.UserResponse;
 import com.devs.hackaton.entity.User;
+import com.devs.hackaton.exception.User.ExistsUserException;
 import com.devs.hackaton.mapper.UserMapper;
 import com.devs.hackaton.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -20,17 +21,10 @@ public class UserService {
         this.userRepository = userRepository;
     }
 
-    public UserResponse CreateUser(UserRequest request) {
-        log.info("Creating user: {}", request);
-
-        if (userRepository.findBycpf(request.cpf()).isPresent()) {
-            throw new IllegalArgumentException("User already exists.");
-        }
+    public UserResponse createUser(UserRequest request) {
         User user = userRepository.save(UserMapper.toEntity(request));
         return UserMapper.toResponse(user);
     }
-
-
 
     public List<UserResponse> findAllUsers() {
         log.info("Fetching all users");
@@ -45,28 +39,18 @@ public class UserService {
     }
 
 
-    public Optional<User> findUserById(UUID id) {
+
+    public User findUserById(UUID id) {
         log.info("Fetching user with id: {}", id);
 
-        if(userRepository.findById(id).isEmpty()){
-            log.warn("User with id: {} not found", id);
-            throw new IllegalArgumentException("User not found");
-        }
-
-        User user = userRepository.findById(id).orElse(null);
-        return userRepository.findById(user.getId());
+        return userRepository.findById(id)
+                .orElseThrow(ExistsUserException::new);
     }
 
 
 
-    public void deleteUser(UUID id) {
+    public void toggleUserStatus(UUID id) {
         log.info("Deleting user with id: {}", id);
-
-        if(userRepository.findById(id).isEmpty()){
-            log.warn("User with id: {} not found, cannot delete", id);
-            throw new IllegalArgumentException("User not found, cannot delete");
-        }
-
         userRepository.deleteById(id);
     }
 
