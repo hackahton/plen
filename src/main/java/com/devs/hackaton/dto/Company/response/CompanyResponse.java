@@ -8,6 +8,5 @@ public record CompanyResponse(
         String nome,
         String endereco,
         Company_User_Status status
-
 ) {
 }
