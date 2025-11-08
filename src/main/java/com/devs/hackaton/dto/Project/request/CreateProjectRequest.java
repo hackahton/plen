@@ -7,6 +7,7 @@ import com.devs.hackaton.enums.ProjectStatus;
 import lombok.Builder;
 
 import java.util.List;
+import java.util.UUID;
 
 @Builder
 public record CreateProjectRequest(
@@ -14,8 +15,8 @@ public record CreateProjectRequest(
         String description,
         Priority priority,
         ProjectStatus projectStatus,
-        List<Company> companies,
-        List<User> users
+        UUID companyId,
+        UUID userId
 
 ) {
 }

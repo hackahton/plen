@@ -1,5 +1,7 @@
 package com.devs.hackaton.dto.Project.response;
 
+import com.devs.hackaton.dto.Company.response.CreateCompanyResponse;
+import com.devs.hackaton.dto.UserDTOs.response.UserResponse;
 import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.User;
 import com.devs.hackaton.enums.Priority;
@@ -16,8 +18,8 @@ public record CreateProjectResponse(
         String description,
         Priority priority,
         ProjectStatus projectStatus,
-        List<Company> companies,
-        List<User> users
+        List<CreateCompanyResponse> companies,
+        List<UserResponse> users
 
 ) {
 }
