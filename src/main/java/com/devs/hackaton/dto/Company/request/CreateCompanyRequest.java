@@ -9,10 +9,10 @@ public record CreateCompanyRequest(
         String cnpj,
 
         @NotBlank
-        String nome,
+        String name,
 
         @NotBlank
-        String endereco,
+        String address,
 
         @NotNull
         Company_User_Status status

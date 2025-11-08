@@ -2,6 +2,7 @@ package com.devs.hackaton.mapper;
 
 import com.devs.hackaton.dto.Project.request.CreateProjectRequest;
 import com.devs.hackaton.dto.Project.request.UpdateProjectRequest;
+import com.devs.hackaton.dto.Project.response.CreateProjectResponse;
 import com.devs.hackaton.dto.Project.response.UpdateProjectResponse;
 import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.Project;
@@ -36,6 +37,18 @@ public class ProjectMapper {
                 companiesId(project.getCompanies().stream().map(Company::getId).toList()).
                 usersId(project.getUsers().stream().map(User::getId).toList()).
                 tasksIds(project.getTasks().stream().map(Task::getId).toList()).
+                build();
+    }
+
+    public static CreateProjectResponse toCreateProjectResponse(Project project){
+        return CreateProjectResponse.builder().
+                id(project.getId()).
+                name(project.getName()).
+                description(project.getDescription()).
+                priority(project.getPriority()).
+                projectStatus(project.getProjectStatus()).
+                companiesIds(project.getCompanies().stream().map(Company::getId).toList()).
+                usersIds(project.getUsers().stream().map(User::getId).toList()).
                 build();
     }
 }

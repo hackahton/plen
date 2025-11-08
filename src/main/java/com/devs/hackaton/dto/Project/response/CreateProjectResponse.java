@@ -16,8 +16,8 @@ public record CreateProjectResponse(
         String description,
         Priority priority,
         ProjectStatus projectStatus,
-        List<CreateCompanyResponse> companies,
-        List<CreateUserResponse> users
+        List<UUID> companiesIds,
+        List<UUID> usersIds
 
 ) {
 }

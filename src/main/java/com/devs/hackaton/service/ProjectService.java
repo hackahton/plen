@@ -2,24 +2,18 @@ package com.devs.hackaton.service;
 
 import com.devs.hackaton.dto.Project.request.CreateProjectRequest;
 import com.devs.hackaton.dto.Project.request.UpdateProjectRequest;
+import com.devs.hackaton.dto.Project.response.CreateProjectResponse;
 import com.devs.hackaton.dto.Project.response.UpdateProjectResponse;
 import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.Project;
 import com.devs.hackaton.entity.User;
 import com.devs.hackaton.enums.Company_User_Status;
-import com.devs.hackaton.enums.Role;
 import com.devs.hackaton.mapper.ProjectMapper;
-import com.devs.hackaton.repository.CompanyRepository;
 import com.devs.hackaton.repository.ProjectRepository;
-import com.devs.hackaton.repository.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
-
-import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -35,9 +29,10 @@ public class ProjectService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Projeto não encontrado."));
     }
 
-    public Project createProject(CreateProjectRequest projectRequest) {
+    public CreateProjectResponse createProject(CreateProjectRequest projectRequest) {
         Project project = ProjectMapper.toProjectEntity(projectRequest);
-        return projectRepository.save(project);
+        projectRepository.save(project);
+        return ProjectMapper.toCreateProjectResponse(project);
     }
 
     public UpdateProjectResponse updateProject(UUID id, UpdateProjectRequest projectRequest) {

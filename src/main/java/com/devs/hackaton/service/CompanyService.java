@@ -32,12 +32,12 @@ public class CompanyService {
             throw new CompanyAlreadyExistException();
         }
         log.info("Criando uma nova empresa.");
-        newCompany = CompanyMapper.toCompanyEntity(request);
+        newCompany = CompanyMapper.toEntity(request);
         log.info("Empresa criada com sucesso.");
         log.info("Salvando empresa no BD...");
         companyRepository.save(newCompany);
         log.info("Empresa salvo com sucesso. ID: {}",newCompany.getId());
-        return new CreateCompanyResponse(newCompany.getId(),newCompany.getCnpj(),newCompany.getEndereco());
+        return new CreateCompanyResponse(newCompany.getId(),newCompany.getCnpj(),newCompany.getAddress());
     }
 
     public CompanyResponse editCompany(UUID idCompany, EditCompanyRequest request){
@@ -48,10 +48,10 @@ public class CompanyService {
         }
 
         if (request.nome().trim() != null){
-            company.setNome(request.nome());
+            company.setName(request.nome());
         }
         if(request.endereco().trim() != null){
-            company.setEndereco(request.endereco());
+            company.setAddress(request.endereco());
         }
         if(request.status() != null){
             company.setStatus(request.status());
@@ -59,12 +59,13 @@ public class CompanyService {
 
         companyRepository.save(company);
 
-        return new CompanyResponse(company.getId(),company.getCnpj(), company.getNome(),company.getEndereco(),company.getStatus());
+        return new CompanyResponse(company.getId(),company.getCnpj(), company.getName(),company.getAddress(),company.getStatus());
     }
 
     public Company findCompanyEntityById(UUID id){
         return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
     }
+
 
 
 }

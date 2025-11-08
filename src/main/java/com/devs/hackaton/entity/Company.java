@@ -26,10 +26,10 @@ public class Company {
     private String cnpj;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @Column(nullable = false)
-    private String endereco;
+    private String address;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
