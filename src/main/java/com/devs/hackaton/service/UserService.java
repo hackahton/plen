@@ -12,35 +12,63 @@ import com.devs.hackaton.entity.Tag;
 import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.entity.User;
 import com.devs.hackaton.enums.Company_User_Status;
-import com.devs.hackaton.exception.User.ExistsUserException;
+import com.devs.hackaton.dto.UserDTOs.request.LoginUserRequest;
+import com.devs.hackaton.dto.UserDTOs.response.LoginUserReponse;
+import com.devs.hackaton.enums.Role;
+import com.devs.hackaton.exception.LoginUsuarioRequestNuloException;
+import com.devs.hackaton.exception.User.AccessDeniedException;
 import com.devs.hackaton.exception.User.UserNotFoundException;
 import com.devs.hackaton.mapper.UserMapper;
 import com.devs.hackaton.repository.CompanyRepository;
 import com.devs.hackaton.repository.UserRepository;
+import com.devs.hackaton.security.auth.JwtTokenService;
+import com.devs.hackaton.security.userdetails.UserDetailsImpl;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserService {
     private final UserRepository userRepository;
     private final CompanyRepository companyRepository;
     private final TagService tagService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtTokenService jwtTokenService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, CompanyRepository companyRepository, TagService tagService) {
-        this.userRepository = userRepository;
-        this.companyRepository = companyRepository;
-        this.tagService = tagService;
-    }
 
-    public CreateUserResponse createUser(UserRequest request) {
+    public CreateUserResponse createUser(UserRequest request, User logged) {
+        if(logged.getRole() == Role.COLABORADOR){
+            throw new AccessDeniedException();
+        }
         User user = UserMapper.toEntity(request);
         Company company = companyRepository.findById(request.companyId()).orElseThrow(RuntimeException::new);
         user.setCompany(company);
         user.setStatus(Company_User_Status.ACTIVE);
+        user.setPassword(passwordEncoder.encode(request.password()));
+
+        userRepository.save(user);
+
+        return UserMapper.toResponse(user);
+    }
+
+
+    public CreateUserResponse createUserADM(UserRequest request) {
+        User user = UserMapper.toEntity(request);
+        Company company = companyRepository.findById(request.companyId()).orElseThrow(RuntimeException::new);
+        user.setCompany(company);
+        user.setStatus(Company_User_Status.ACTIVE);
+        user.setPassword(passwordEncoder.encode(request.password()));
 
         userRepository.save(user);
 
@@ -105,15 +133,32 @@ public class UserService {
         return userRepository.findUserByIdAndStatus(id, status);
     }
 
-    public User findFirstByStatus(Company_User_Status status){
-        return userRepository.findFirstByStatus(status);
-    }
+    public LoginUserReponse loginUsuario(LoginUserRequest request) {
+        log.info("Verificando se o request para efetuar o login do usuário está nulo...");
+        if (Objects.isNull(request)) {
+            throw new LoginUsuarioRequestNuloException();
+        }
+        log.info("Request verificado e não está nulo.");
+        try {// Cria um objeto de autenticação com o email e a senha do usuário
+            UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
+                    new UsernamePasswordAuthenticationToken(request.email(), request.password());
 
-    public List<UserReportResponse> UserReport(UUID id){
-        return userRepository.findAllByOwner(id).stream()
-                .map(n -> new UserReportResponse(n.getTitle(),
-                        n.getDescription(),
-                        n.getStatus())).toList();
-    }
+            // Autentica o usuário com as credenciais fornecidas
+            Authentication authentication = authenticationManager.authenticate(usernamePasswordAuthenticationToken);
 
+            // Obtém o objeto UserDetails do usuário autenticado
+            UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
+            // Gera um token JWT para o usuário autenticado
+            String token = jwtTokenService.generateToken(userDetails);
+
+            log.info("Login de usuário efetuado com sucesso.");
+            log.info("Token gerado: {}", token);
+            return new LoginUserReponse(token);
+
+        } catch (BadCredentialsException e) {
+            log.error("Tentativa de login com credenciais inválidas para email: {}", request.email());
+            throw new BadCredentialsException("Email ou senha incorretos.");
+        }
+    }
 }

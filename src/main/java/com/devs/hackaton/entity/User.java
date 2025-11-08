@@ -37,8 +37,6 @@ public class User {
     private String password;
 
     @Column(nullable = false, unique = true)
-    @CPF
-    @Size(min = 11)
     private String cpf;
 
     @Enumerated(EnumType.STRING)

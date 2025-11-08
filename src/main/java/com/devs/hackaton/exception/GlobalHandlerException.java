@@ -4,6 +4,7 @@ import com.devs.hackaton.exception.Company.CompanyAlreadyExistException;
 import com.devs.hackaton.exception.Company.CompanyNotFoundException;
 import com.devs.hackaton.exception.Company.CreateCompanyRequestIsNullException;
 import com.devs.hackaton.exception.Company.EditCompanyRequestsNullException;
+import com.devs.hackaton.exception.User.AccessDeniedException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,6 +49,19 @@ public class GlobalHandlerException {
     //Utilizado no CompanyService quando o request para editar empresa for nulo
     @ExceptionHandler(EditCompanyRequestsNullException.class)
     public ResponseEntity<String> handleEditCompanyRequestsNullException(EditCompanyRequestsNullException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    //Utilizado no UsuarioService para verificar se o request para login de usuario está nulo
+    @ExceptionHandler(LoginUsuarioRequestNuloException.class)
+    public ResponseEntity<String> handleLoginUsuarioRequestNuloException(LoginUsuarioRequestNuloException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+
+    //Utilizado no UsuarioService para verificar se o usuario tem permissao para ação
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<String> handleAccessDeniedException(AccessDeniedException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
 
