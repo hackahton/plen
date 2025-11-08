@@ -21,9 +21,13 @@ public class TagService {
 
     public TagResponse createTag(CreateTag request) {
         Tag tag = TagMapper.toEntity(request);
-        tagRepository.save(tag);
 
-        return TagMapper.toResponse(tag);
+        try{
+            tagRepository.save(tag);
+            return TagMapper.toResponse(tag);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
    public TagResponse findTagById(Long id) {

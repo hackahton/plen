@@ -35,9 +35,7 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/swagger-ui.html",
             "/swagger-resources/**",
-            "/webjars/**",
-            "/company",
-            "/users/createADM" // Url que usaremos para criar um usuário
+            "/webjars/**"
     };
 
     @Bean

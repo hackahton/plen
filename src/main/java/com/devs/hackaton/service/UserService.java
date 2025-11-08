@@ -70,9 +70,14 @@ public class UserService {
         user.setStatus(Company_User_Status.ACTIVE);
         user.setPassword(passwordEncoder.encode(request.password()));
 
-        userRepository.save(user);
+        try {
+            userRepository.save(user);
+            return UserMapper.toResponse(user);
+        } catch (Exception e) {
+            throw new RuntimeException(e.getMessage());
+        }
 
-        return UserMapper.toResponse(user);
+
     }
 
     public List<CreateUserResponse> findAllUsers() {
@@ -93,11 +98,20 @@ public class UserService {
     }
 
 
-    public void toggleUserStatus(UUID id) {
+    public void toggleUserStatus(UUID id, User logged) {
         User user = findUserEntityById(id);
+
+        if(logged.getRole() == Role.COLABORADOR){
+            throw new AccessDeniedException();
+        }
+
         user.setStatus(toggleStatus(user.getStatus()));
 
-        userRepository.save(user);
+        try{
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
     private Company_User_Status toggleStatus(Company_User_Status status) {
@@ -106,26 +120,63 @@ public class UserService {
                 : Company_User_Status.ACTIVE;
     }
 
-    public void UpdatePassword(UUID id, UpdatePassword request) {
+    public void UpdatePassword(UUID id, UpdatePassword request, User logged) {
         User user = findUserEntityById(id);
-        user.setPassword(request.password());
-        userRepository.save(user);
+
+        if(Objects.isNull(logged)){
+            throw new AccessDeniedException();
+        }
+
+        user.setPassword(passwordEncoder.encode(request.password()));
+
+        try{
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+
     }
 
-    public void updateUserTag(UUID id, UpdateUserTag tag){
+    public void updateUserTag(UUID id, UpdateUserTag tag, User logged){
         User user = findUserEntityById(id);
-        Tag tagEntity = tagService.findTagEntityById(tag.tagId());
 
+        if(Objects.isNull(logged)){
+            throw new AccessDeniedException();
+        }
+
+        if(logged.getRole() == Role.COLABORADOR){
+            throw new AccessDeniedException();
+        }
+
+        Tag tagEntity = tagService.findTagEntityById(tag.tagId());
         user.getTags().add(tagEntity);
-        userRepository.save(user);
+
+        try{
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
-    public void removeUserTag(UUID id, UpdateUserTag tag){
+    public void removeUserTag(UUID id, UpdateUserTag tag, User logged){
         User user = findUserEntityById(id);
-        Tag tagEntity = tagService.findTagEntityById(tag.tagId());
 
+        if(Objects.isNull(logged)){
+            throw new AccessDeniedException();
+        }
+
+        if(logged.getRole() == Role.COLABORADOR){
+            throw new AccessDeniedException();
+        }
+
+        Tag tagEntity = tagService.findTagEntityById(tag.tagId());
         user.getTags().remove(tagEntity);
-        userRepository.save(user);
+
+        try{
+            userRepository.save(user);
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
     }
 
 

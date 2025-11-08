@@ -35,9 +35,15 @@ public class CompanyService {
         newCompany = CompanyMapper.toEntity(request);
         log.info("Empresa criada com sucesso.");
         log.info("Salvando empresa no BD...");
-        companyRepository.save(newCompany);
-        log.info("Empresa salvo com sucesso. ID: {}",newCompany.getId());
-        return new CreateCompanyResponse(newCompany.getId(),newCompany.getCnpj(),newCompany.getAddress());
+        try {
+            companyRepository.save(newCompany);
+            log.info("Empresa salvo com sucesso. ID: {}",newCompany.getId());
+            return new CreateCompanyResponse(newCompany.getId(),newCompany.getCnpj(),newCompany.getAddress());
+        } catch (Exception e) {
+            throw new RuntimeException();
+        }
+
+
     }
 
     public CompanyResponse editCompany(UUID idCompany, EditCompanyRequest request){
@@ -57,9 +63,12 @@ public class CompanyService {
             company.setStatus(request.status());
         }
 
-        companyRepository.save(company);
-
-        return new CompanyResponse(company.getId(),company.getCnpj(), company.getName(),company.getAddress(),company.getStatus());
+        try{
+            companyRepository.save(company);
+            return new CompanyResponse(company.getId(),company.getCnpj(), company.getName(),company.getAddress(),company.getStatus());
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public Company findCompanyEntityById(UUID id){

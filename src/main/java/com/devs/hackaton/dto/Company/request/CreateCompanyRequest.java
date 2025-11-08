@@ -5,16 +5,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 
 public record CreateCompanyRequest(
-        @NotBlank
+        @NotBlank(message = "CNPJ Obrigatório")
         String cnpj,
 
-        @NotBlank
+        @NotBlank(message = "O nome não pode ser nulo ou branco")
         String name,
 
-        @NotBlank
+        @NotBlank(message = "O Endereço não pode estar vazio ou nulo")
         String address,
 
-        @NotNull
+        @NotNull(message = "O status não pode ser nulo")
         Company_User_Status status
 ) {
 }

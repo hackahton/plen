@@ -23,6 +23,7 @@ public class Company {
     private UUID id;
 
     @Column(nullable = false)
+    @CNPJ
     private String cnpj;
 
     @Column(nullable = false)

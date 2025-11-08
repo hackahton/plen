@@ -18,20 +18,33 @@ public class TaskController {
     private final TaskService taskService;
 
     @PostMapping
-    public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest request) {
-        TaskResponse response = taskService.criarTask(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<?>createTask(@RequestBody TaskRequest request) {
+        try {
+            TaskResponse response = taskService.criarTask(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possivel criar uma task");
+        }
+
     }
 
     @PutMapping("/editar")
     public ResponseEntity<?> editTask(@RequestBody MudancaRequest request) {
-        taskService.editarTask(request);
-        return ResponseEntity.status(HttpStatus.OK).body("Editado");
+        try{
+            taskService.editarTask(request);
+            return ResponseEntity.status(HttpStatus.OK).body("Editado");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possivel editar a task");
+        }
     }
 
     @PutMapping("/atribuicao")
     public ResponseEntity<?> atribuicaoTask(@RequestBody AtribuicaoRequest request) {
-        taskService.atribuirTask(request);
-        return ResponseEntity.status(HttpStatus.OK).body("Atribuido");
+        try{
+            taskService.atribuirTask(request);
+            return ResponseEntity.status(HttpStatus.OK).body("Atribuido");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possivel atribuir uma task");
+        }
     }
 }

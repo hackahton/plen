@@ -20,14 +20,23 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @PostMapping
-    public ResponseEntity<CreateCompanyResponse> createCompany(@RequestBody CreateCompanyRequest request){
-        CreateCompanyResponse response = companyService.createCompany(request);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    public ResponseEntity<?> createCompany(@RequestBody CreateCompanyRequest request){
+        try{
+            CreateCompanyResponse response = companyService.createCompany(request);
+            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não é possível atender a sua requisição");
+        }
+
     }
 
     @PutMapping("/{idCompany}")
-    public ResponseEntity<CompanyResponse> editCompany(@PathVariable UUID idCompany, @RequestBody EditCompanyRequest request){
-        CompanyResponse response = companyService.editCompany(idCompany, request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> editCompany(@PathVariable UUID idCompany, @RequestBody EditCompanyRequest request){
+        try{
+            CompanyResponse response = companyService.editCompany(idCompany, request);
+            return ResponseEntity.ok(response);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possível editar essa empresa");
+        }
     }
 }

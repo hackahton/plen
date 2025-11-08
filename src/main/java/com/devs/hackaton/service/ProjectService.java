@@ -3,8 +3,8 @@ package com.devs.hackaton.service;
 import com.devs.hackaton.dto.Project.request.CreateProjectRequest;
 import com.devs.hackaton.dto.Project.request.UpdateProjectRequest;
 import com.devs.hackaton.dto.Project.response.CreateProjectResponse;
+import com.devs.hackaton.dto.Project.response.ProjectReportResponse;
 import com.devs.hackaton.dto.Project.response.UpdateProjectResponse;
-import com.devs.hackaton.dto.Task.response.ProjectReportResponse;
 import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.Project;
 import com.devs.hackaton.entity.Task;
@@ -71,6 +71,11 @@ public class ProjectService {
         projectRepository.save(project);
 
         return ProjectMapper.toUpdateProjectResponse(project);
+    }
+
+    public List<ProjectReportResponse> findAllProjects() {
+        List<Project> projects = projectRepository.findAll();
+        return ProjectMapper.toList(projects);
     }
 
 //    public List<ProjectReportResponse> TasksOfProject(UUID id){
