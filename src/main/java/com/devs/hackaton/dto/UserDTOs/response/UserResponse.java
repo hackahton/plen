@@ -17,9 +17,7 @@ public record UserResponse(
         String email,
         Role role,
         Company_User_Status status,
-        List<Project> projects,
-        List<Task> tasks,
-        Company company,
-        List<Tag> tags
+        Company company
+
 ) {
 }

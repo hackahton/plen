@@ -28,4 +28,10 @@ public class GlobalHandlerException {
     public ResponseEntity<String> handleCreateCompanyRequestIsNullException(CreateCompanyRequestIsNullException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
     }
+
+    //Utilizado no CompanyService quando ja existe empresa com o mesmo cnpj cadastrada
+    @ExceptionHandler(CompanyAlreadyExistException.class)
+    public ResponseEntity<String> handleCompanyAlreadyExistException(CompanyAlreadyExistException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
+    }
 }

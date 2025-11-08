@@ -6,6 +6,8 @@ import com.devs.hackaton.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,7 +18,8 @@ public class CompanyController {
 
     private final CompanyService companyService;
 
-    public ResponseEntity<CreateCompanyResponse> createCompany(CreateCompanyRequest request){
+    @PostMapping
+    public ResponseEntity<CreateCompanyResponse> createCompany(@RequestBody CreateCompanyRequest request){
         CreateCompanyResponse response = companyService.createCompany(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }

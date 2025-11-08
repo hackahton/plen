@@ -28,11 +28,6 @@ public class UserService {
 
     public List<UserResponse> findAllUsers() {
         log.info("Fetching all users");
-
-        if(userRepository.findAll().isEmpty()){
-            log.warn("No users found in the database");
-            throw new IllegalArgumentException("No users found in the database");
-        }
         return userRepository.findAll().stream()
                 .map(UserMapper::toResponse)
                 .toList();
