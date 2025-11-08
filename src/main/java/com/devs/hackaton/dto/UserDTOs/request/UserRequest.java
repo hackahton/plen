@@ -1,6 +1,7 @@
 package com.devs.hackaton.dto.UserDTOs.request;
 
 
+import com.devs.hackaton.dto.Company.request.CreateCompanyRequest;
 import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.Project;
 import com.devs.hackaton.entity.Tag;
@@ -18,10 +19,8 @@ public record UserRequest(
         String cpf,
         Role role,
         Company_User_Status status,
-        List<Project> projects,
-        List<Task> tasks,
-        Company company,
-        List<Tag> tags
+        CreateCompanyRequest company
+
 ) {
 
 

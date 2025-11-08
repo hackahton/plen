@@ -15,10 +15,7 @@ public class UserMapper {
                     .cpf(request.cpf())
                     .role(request.role())
                     .status(request.status())
-                    .projects(request.projects())
-                    .tasks(request.tasks())
-                    .company(request.company())
-                    .tags(request.tags())
+                    .company(CompanyMapper.toCompanyEntity(request.company()))
                     .build();
         }
 
