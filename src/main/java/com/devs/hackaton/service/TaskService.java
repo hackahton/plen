@@ -30,7 +30,7 @@ public class TaskService {
             throw new IllegalArgumentException("Voce nao tem acesso a isso");
         }
 
-        ;
+        Task task = new Task();
         task.setTitle(request.title());
         task.setDescription(request.description());
         task.setTerm(request.term());
