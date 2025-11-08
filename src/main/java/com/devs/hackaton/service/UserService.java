@@ -1,8 +1,6 @@
 package com.devs.hackaton.service;
 
-import com.devs.hackaton.entity.Project;
 import com.devs.hackaton.entity.User;
-import com.devs.hackaton.repository.ProjectRepository;
 import com.devs.hackaton.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
