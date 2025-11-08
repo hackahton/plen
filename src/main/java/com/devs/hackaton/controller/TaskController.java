@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/task")
 @RequiredArgsConstructor
@@ -45,6 +47,15 @@ public class TaskController {
             return ResponseEntity.status(HttpStatus.OK).body("Atribuido");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possivel atribuir uma task");
+        }
+    }
+
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<?> findAllByUserId(@PathVariable UUID userId) {
+        try {
+            return ResponseEntity.ok(taskService.findAllByUserId(userId));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Não foi possivel buscar as tasks");
         }
     }
 }

@@ -109,4 +109,8 @@ public class TaskService {
         taskRepository.save(task);
     }
 
+    public List<Task> findAllByUserId(UUID userId){
+        return taskRepository.findAllByUsersId(userId);
+    }
+
 }
