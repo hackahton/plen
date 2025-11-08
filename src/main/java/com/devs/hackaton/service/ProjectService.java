@@ -73,12 +73,12 @@ public class ProjectService {
         return ProjectMapper.toUpdateProjectResponse(project);
     }
 
-    public List<ProjectReportResponse> TasksOfProject(UUID id){
-        return projectRepository.findAllByProject(id).stream()
-                .map(n -> new ProjectReportResponse(n.getTitle(),
-                        n.getDescription(),
-                        n.getStatus()))
-                .toList();
-    }
+//    public List<ProjectReportResponse> TasksOfProject(UUID id){
+//        return projectRepository.findAllByProject(id).stream()
+//                .map(n -> new ProjectReportResponse(n.getTitle(),
+//                        n.getDescription(),
+//                        n.getStatus()))
+//                .toList();
+//    }
 
 }

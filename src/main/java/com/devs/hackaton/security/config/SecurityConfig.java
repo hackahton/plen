@@ -1,7 +1,6 @@
 package com.devs.hackaton.security.config;
 
 import com.devs.hackaton.security.auth.SecurityFilter;
-import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -20,12 +19,14 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import java.util.List;
 
-@AllArgsConstructor
 @Configuration
 public class SecurityConfig {
 
     private final SecurityFilter secutiryFilter;
-    private final CorsConfigurationSource corsConfigurationSource;
+
+    public SecurityConfig(SecurityFilter secutiryFilter) {
+        this.secutiryFilter = secutiryFilter;
+    }
 
     public static final String[] ENDPOINTS_WITH_AUTHENTICATION_NOT_REQUIRED = {
             "/h2-console/**", // Url para acessar o banco de dados
@@ -42,7 +43,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
-                .cors(cors -> cors.configurationSource(corsConfigurationSource)) // Habilita CORS
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Habilita CORS
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorizeRequests -> authorizeRequests
@@ -70,7 +71,7 @@ public class SecurityConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
 
-        configuration.setAllowedOrigins(List.of("*"));
+        configuration.setAllowedOriginPatterns(List.of("*")); // Mudado para AllowedOriginPatterns
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("*"));
         configuration.setAllowCredentials(true);

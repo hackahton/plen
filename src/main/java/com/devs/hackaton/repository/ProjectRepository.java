@@ -9,5 +9,4 @@ import java.util.UUID;
 
 @Repository
 public interface ProjectRepository extends JpaRepository<Project, UUID> {
-    List<Task> findAllByProject(UUID id);
 }
