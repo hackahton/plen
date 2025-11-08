@@ -1,5 +1,6 @@
 package com.devs.hackaton.entity;
 
+import com.devs.hackaton.enums.Company_User_Status;
 import com.devs.hackaton.enums.ProjectStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -33,7 +34,7 @@ public class Company {
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProjectStatus status;
+    private Company_User_Status status;
 
     @ManyToMany
     @JoinTable(
