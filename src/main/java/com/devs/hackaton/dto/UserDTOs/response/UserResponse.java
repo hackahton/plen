@@ -8,7 +8,6 @@ import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.enums.Company_User_Status;
 import com.devs.hackaton.enums.Role;
 import lombok.Builder;
-
 import java.util.List;
 import java.util.UUID;
 @Builder
@@ -16,8 +15,6 @@ public record UserResponse(
         UUID id,
         String name,
         String email,
-        String password,
-        String cpf,
         Role role,
         Company_User_Status status,
         List<Project> projects,

@@ -28,7 +28,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Email
     private String email;
 
@@ -36,7 +36,7 @@ public class User {
     @Size(min = 6)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @CPF
     @Size(min = 11)
     private String cpf;

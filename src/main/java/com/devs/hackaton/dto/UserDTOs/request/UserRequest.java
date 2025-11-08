@@ -8,8 +8,6 @@ import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.enums.Company_User_Status;
 import com.devs.hackaton.enums.Role;
 import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
 import java.util.List;
 
 @Builder

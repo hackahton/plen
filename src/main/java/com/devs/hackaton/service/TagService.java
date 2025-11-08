@@ -38,4 +38,14 @@ public class TagService {
                 .map(TagMapper::toResponse)
                 .toList();
     }
+
+    public void deleteTagById(Long id) {
+        log.info("Deleting tag with id: {}", id);
+
+        if (tagRepository.findById(id).isEmpty()) {
+            log.error("Tag with id: {} not found", id);
+            throw new IllegalArgumentException("Tag not found");
+        }
+        tagRepository.deleteById(id);
+    }
 }
