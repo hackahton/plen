@@ -10,6 +10,7 @@ import com.devs.hackaton.enums.Company_User_Status;
 import com.devs.hackaton.enums.Role;
 import lombok.Builder;
 import java.util.List;
+import java.util.UUID;
 
 @Builder
 public record UserRequest(
@@ -19,9 +20,6 @@ public record UserRequest(
         String cpf,
         Role role,
         Company_User_Status status,
-        CreateCompanyRequest company
-
+        UUID companyId
 ) {
-
-
 }

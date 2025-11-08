@@ -20,16 +20,16 @@ public class Company {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    private UUID id;
 
     @Column(nullable = false)
     private String cnpj;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
     @Column(nullable = false)
-    private String endereco;
+    private String address;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)

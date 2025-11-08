@@ -42,4 +42,7 @@ public class Project {
     @JoinTable(name = "project_user",joinColumns = @JoinColumn(name = "project_id"),inverseJoinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "user_id")
     private List<User> users;
+
+    @OneToMany(mappedBy = "project")
+    private List<Task> tasks;
 }
