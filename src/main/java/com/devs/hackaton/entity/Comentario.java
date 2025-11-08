@@ -1,9 +1,6 @@
 package com.devs.hackaton.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,12 +14,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Comentario {
-    @Id @GeneratedValue
+    @Id @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
+
 
     private String comentario;
 
     @ManyToOne
+    @JoinColumn(name = "task_id", referencedColumnName = "id")
     private Task task;
 
     @ManyToOne

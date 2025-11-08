@@ -39,8 +39,8 @@ public class Task {
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
-    @OneToMany
-    private List<String> comentario;
+    @OneToMany(mappedBy = "comentario")
+    private List<Comentario> comentario;
 
     @NotBlank
     private UUID owner;

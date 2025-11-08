@@ -60,5 +60,5 @@ public class User {
     private List<Tag> tags;
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
-    private List<Comentario> comentarios = new ArrayList<>();
+    private List<Comentario> comentarios;
 }
