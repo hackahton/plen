@@ -45,7 +45,6 @@ public class UserService {
     }
 
 
-
     public Optional<User> findUserById(UUID id) {
         log.info("Fetching user with id: {}", id);
 
