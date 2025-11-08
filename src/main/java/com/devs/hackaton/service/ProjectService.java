@@ -1,6 +1,5 @@
 package com.devs.hackaton.service;
 
-import com.devs.hackaton.dto.Project.request.CreateProjectRequest;
 import com.devs.hackaton.entity.Project;
 import com.devs.hackaton.entity.User;
 import com.devs.hackaton.enums.Role;
@@ -92,6 +91,4 @@ public class ProjectService {
     public void deleteProject(UUID id) {
         projectRepository.deleteById(id);
     }
-
-
 }
