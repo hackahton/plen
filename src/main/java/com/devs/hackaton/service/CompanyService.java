@@ -16,6 +16,7 @@ import com.devs.hackaton.mapper.CompanyMapper;
 
 import java.util.Objects;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 @Slf4j
@@ -39,7 +40,7 @@ public class CompanyService {
         return new CreateCompanyResponse(newCompany.getId(),newCompany.getCnpj(),newCompany.getEndereco());
     }
 
-    public CompanyResponse editCompany(String idCompany,EditCompanyRequest request){
+    public CompanyResponse editCompany(UUID idCompany, EditCompanyRequest request){
         Company company = companyRepository.findById(idCompany).orElseThrow(CompanyNotFoundException::new);
 
         if(Objects.isNull(request)){
@@ -61,7 +62,9 @@ public class CompanyService {
         return new CompanyResponse(company.getId(),company.getCnpj(), company.getNome(),company.getEndereco(),company.getStatus());
     }
 
-
+    public Company findCompanyEntityById(UUID id){
+        return companyRepository.findById(id).orElseThrow(CompanyNotFoundException::new);
+    }
 
 
 }

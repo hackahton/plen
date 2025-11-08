@@ -1,10 +1,18 @@
 package com.devs.hackaton.service;
 
+import com.devs.hackaton.dto.Project.request.CreateProjectRequest;
+import com.devs.hackaton.dto.Project.request.UpdateProjectRequest;
+import com.devs.hackaton.dto.Project.response.UpdateProjectResponse;
+import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.Project;
 import com.devs.hackaton.entity.User;
+import com.devs.hackaton.enums.Company_User_Status;
 import com.devs.hackaton.enums.Role;
+import com.devs.hackaton.mapper.ProjectMapper;
+import com.devs.hackaton.repository.CompanyRepository;
 import com.devs.hackaton.repository.ProjectRepository;
 import com.devs.hackaton.repository.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -15,80 +23,53 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
+@AllArgsConstructor
 public class ProjectService {
 
     private final ProjectRepository projectRepository;
-    private final UserRepository userRepository; // Adicionado para validar associações
+    private final UserService userService;
+    private final CompanyService companyService;
 
-    @Autowired
-    public ProjectService(ProjectRepository projectRepository, UserRepository userRepository) {
-        this.projectRepository = projectRepository;
-        this.userRepository = userRepository;
-    }
-
-    public Project saveProject(Project project, Role userRole) {
-
-        if (project.getId() == null) {
-            if (userRole == Role.COLABORADOR) {
-                throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                        "Colaboradores não podem criar novos projetos. Somente GESTOR ou SUPERVISOR.");
-            }
-            return projectRepository.save(project);
-        }
-
-
-        Optional<Project> existingProjectOpt = projectRepository.findById(project.getId());
-
-        if (existingProjectOpt.isPresent()) {
-            Project existingProject = existingProjectOpt.get();
-
-            if (existingProject.getProjectStatus() != project.getProjectStatus()) {
-
-
-                if (userRole == Role.COLABORADOR) {
-                    throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                            "Usuário com função " + userRole + " não tem permissão para alterar o status do projeto.");
-                }
-            }
-
-            return projectRepository.save(project);
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "Projeto com ID " + project.getId() + " não encontrado.");
-        }
-    }
-
-    public Project associateUser(UUID projectId, UUID userId, Role userRole) {
-        if (userRole == Role.COLABORADOR) {
-            throw new ResponseStatusException(HttpStatus.FORBIDDEN,
-                    "Somente GESTOR ou SUPERVISOR podem associar usuários a um projeto.");
-        }
-
-        Project project = projectRepository.findById(projectId)
+    public Project findProjectEntityById(UUID id) {
+        return projectRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Projeto não encontrado."));
+    }
 
-        User user = userRepository.findById(userId)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuário não encontrado."));
-
-        if (project.getUsers().contains(user)) {
-            throw new ResponseStatusException(HttpStatus.CONFLICT, "Usuário já está associado a este projeto.");
-        }
-
-        project.getUsers().add(user);
-        user.getProjects().add(project);
-
+    public Project createProject(CreateProjectRequest projectRequest) {
+        Project project = ProjectMapper.toProjectEntity(projectRequest);
         return projectRepository.save(project);
     }
 
-    public List<Project> findAllProjects() {
-        return projectRepository.findAll();
+    public UpdateProjectResponse updateProject(UUID id, UpdateProjectRequest projectRequest) {
+        Project project = findProjectEntityById(id);
+
+        if ( projectRequest.name() != null){
+            project.setName(projectRequest.name());
+        }
+
+        if ( projectRequest.description() != null){
+            project.setDescription(projectRequest.description());
+        }
+
+        if ( projectRequest.priority() != null){
+            project.setPriority(projectRequest.priority());
+        }
+
+        if (projectRequest.companyId() != null){
+            Company company = companyService.findCompanyEntityById(projectRequest.companyId());
+            project.getCompanies().add(company);
+        }
+
+        if (projectRequest.userId() != null) {
+            for (UUID userId : projectRequest.userId()) {
+                User user = userService.findUserEntityByStatusAndId(userId, Company_User_Status.ACTIVE);
+                project.getUsers().add(user);
+            }
+        }
+
+        projectRepository.save(project);
+
+        return ProjectMapper.toUpdateProjectResponse(project);
     }
 
-    public Optional<Project> findProjectById(UUID id) {
-        return projectRepository.findById(id);
-    }
-
-    public void deleteProject(UUID id) {
-        projectRepository.deleteById(id);
-    }
 }

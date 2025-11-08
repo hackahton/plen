@@ -20,32 +20,22 @@ public class TagService {
     }
 
     public TagResponse createTag(CreateTag request) {
-        log.info("Creating tag: {}", request);
-
-        if (tagRepository.findByName(request.name()).isPresent()) {
-            log.error("Tag already exists");
-            throw new IllegalArgumentException("Tag already exists");
-        }
-
-        Tag tag = tagRepository.save(TagMapper.toEntity(request));
-        log.info("Tag created: {}", tag);
+        Tag tag = TagMapper.toEntity(request);
+        tagRepository.save(tag);
 
         return TagMapper.toResponse(tag);
     }
 
-    public List<TagResponse> findAll() {
-        return tagRepository.findAll().stream()
-                .map(TagMapper::toResponse)
-                .toList();
-    }
+   public TagResponse findTagById(Long id) {
+       Tag tag = findTagEntityById(id);
+       return TagMapper.toResponse(tag);
+   }
 
-    public void deleteTagById(Long id) {
-        log.info("Deleting tag with id: {}", id);
+   public Tag findTagEntityById(Long id) {
+       return tagRepository.findById(id).orElseThrow(() -> new RuntimeException("Tag not found"));
+   }
 
-        if (tagRepository.findById(id).isEmpty()) {
-            log.error("Tag with id: {} not found", id);
-            throw new IllegalArgumentException("Tag not found");
-        }
-        tagRepository.deleteById(id);
-    }
+   public List<TagResponse> findAllTags() {
+       return tagRepository.findAll().stream().map(TagMapper::toResponse).toList();
+   }
 }
