@@ -1,6 +1,8 @@
 package com.devs.hackaton.service;
 
-import com.devs.hackaton.dto.request.TaskRequest;
+import com.devs.hackaton.dto.Task.request.MudancaRequest;
+import com.devs.hackaton.dto.Task.request.TaskRequest;
+import com.devs.hackaton.dto.Task.response.TaskResponse;
 import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.entity.User;
 import com.devs.hackaton.enums.Role;
@@ -20,7 +22,7 @@ public class TaskService {
     @Autowired
     private UserRepository userRepository;
 
-    public void criarTask(TaskRequest request){
+    public TaskResponse criarTask(TaskRequest request){
         User user = userRepository.findById(request.user_id())
                 .orElseThrow(() -> new IllegalArgumentException("Nao encontrado"));
 
@@ -35,6 +37,19 @@ public class TaskService {
         task.setDifficulty(request.difficulty());
         task.setStatus(TaskStatus.PENDENTE);
         task.setPriority(request.priority());
+        taskRepository.save(task);
+
+        return new TaskResponse();
+    }
+
+    public void mudarStatus(MudancaRequest request){
+        User user = userRepository.findById(request.idUser())
+                .orElseThrow(() -> new IllegalArgumentException("Nao encontrado"));
+
+        Task task = taskRepository.findById(request.idTask())
+                .orElseThrow(()-> new IllegalArgumentException("Nao encontrado"));
+
+        task.setStatus(request.status());
         taskRepository.save(task);
     }
 }
