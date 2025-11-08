@@ -4,10 +4,13 @@ import com.devs.hackaton.dto.Project.request.CreateProjectRequest;
 import com.devs.hackaton.dto.Project.request.UpdateProjectRequest;
 import com.devs.hackaton.dto.Project.response.CreateProjectResponse;
 import com.devs.hackaton.dto.Project.response.UpdateProjectResponse;
+import com.devs.hackaton.dto.Project.response.ProjectReportResponse;
 import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.Project;
 import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.entity.User;
+
+import java.util.List;
 
 public class ProjectMapper {
     public static Project toProjectEntity(CreateProjectRequest projectRequest) {
@@ -51,4 +54,20 @@ public class ProjectMapper {
                 usersIds(project.getUsers().stream().map(User::getId).toList()).
                 build();
     }
-}
+
+    public static ProjectReportResponse toResponse(Project project){
+        return ProjectReportResponse.builder().
+                id(project.getId()).
+                name(project.getName()).
+                description(project.getDescription()).
+                priority(project.getPriority()).
+                projectStatus(project.getProjectStatus()).
+                tasks(TaskMapper.toListTaskResponse(project.getTasks())).
+                build();
+    }
+
+    public static List<ProjectReportResponse> toList(List<Project> projects){
+        return projects.stream()
+                .map(ProjectMapper::toResponse)
+                .toList();
+    }}
