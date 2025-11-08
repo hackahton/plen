@@ -72,7 +72,7 @@ public class TaskService {
                 .orElseThrow(() -> new IllegalArgumentException("User nao encontrado"));
 
         if (user.getStatus().equals(Company_User_Status.INACTIVE)){
-            task.getUsers().add(userRepository.findFirst(Company_User_Status.ACTIVE));
+            task.getUsers().add(userRepository.findFirstByStatus(Company_User_Status.ACTIVE));
         }
 
         task.getUsers().add(user);
