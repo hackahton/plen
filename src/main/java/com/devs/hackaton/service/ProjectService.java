@@ -4,8 +4,10 @@ import com.devs.hackaton.dto.Project.request.CreateProjectRequest;
 import com.devs.hackaton.dto.Project.request.UpdateProjectRequest;
 import com.devs.hackaton.dto.Project.response.CreateProjectResponse;
 import com.devs.hackaton.dto.Project.response.UpdateProjectResponse;
+import com.devs.hackaton.dto.Task.response.ProjectReportResponse;
 import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.Project;
+import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.entity.User;
 import com.devs.hackaton.enums.Company_User_Status;
 import com.devs.hackaton.mapper.ProjectMapper;
@@ -15,6 +17,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+
+import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -67,6 +71,14 @@ public class ProjectService {
         projectRepository.save(project);
 
         return ProjectMapper.toUpdateProjectResponse(project);
+    }
+
+    public List<ProjectReportResponse> TasksOfProject(UUID id){
+        return projectRepository.findAllByProject(id).stream()
+                .map(n -> new ProjectReportResponse(n.getTitle(),
+                        n.getDescription(),
+                        n.getStatus()))
+                .toList();
     }
 
 }
