@@ -1,4 +1,4 @@
-package com.devs.hackaton.dto.UserDTOs;
+package com.devs.hackaton.dto.UserDTOs.request;
 
 
 import com.devs.hackaton.entity.Company;
@@ -7,12 +7,11 @@ import com.devs.hackaton.entity.Tag;
 import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.enums.Company_User_Status;
 import com.devs.hackaton.enums.Role;
-
+import lombok.Builder;
 import java.util.List;
-import java.util.UUID;
 
-public record UserResponse(
-        UUID id,
+@Builder
+public record UserRequest(
         String name,
         String email,
         String password,
@@ -24,4 +23,6 @@ public record UserResponse(
         Company company,
         List<Tag> tags
 ) {
+
+
 }

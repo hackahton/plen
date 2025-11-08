@@ -35,10 +35,10 @@ public class Project {
 
     @ManyToMany(mappedBy = "projects")
     @Column(name = "company_id")
-    private List<Company> companyIds;
+    private List<Company> companies;
 
     @ManyToMany
     @JoinTable(name = "project_user",joinColumns = @JoinColumn(name = "project_id"),inverseJoinColumns = @JoinColumn(name = "user_id"))
     @Column(name = "user_id")
-    private List<User> userIds;
+    private List<User> users;
 }

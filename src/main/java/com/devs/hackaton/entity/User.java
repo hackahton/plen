@@ -18,6 +18,7 @@ import java.util.UUID;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 @Table(name = "users")
 public class User {
     @Id
@@ -27,7 +28,7 @@ public class User {
     @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @Email
     private String email;
 
@@ -35,7 +36,7 @@ public class User {
     @Size(min = 6)
     private String password;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     @CPF
     @Size(min = 11)
     private String cpf;
@@ -47,14 +48,14 @@ public class User {
     private Company_User_Status status;
 
     @ManyToMany(mappedBy = "users")
-    private List<Project> projects = new ArrayList<>();
+    private List<Project> projects;
 
     @ManyToMany(mappedBy = "users")
-    private List<Task> tasks = new ArrayList<>();
+    private List<Task> tasks;
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Company company;
 
     @ManyToMany(mappedBy = "users")
-    private List<Tag> tags = new ArrayList<>();
+    private List<Tag> tags;
 }

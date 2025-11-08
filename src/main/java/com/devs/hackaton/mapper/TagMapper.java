@@ -7,14 +7,14 @@ import com.devs.hackaton.entity.Tag;
 public class TagMapper {
     public static Tag toEntity(CreateTag request){
         return Tag.builder()
-                .nome(request.nome())
+                .name(request.name())
                 .build();
     }
 
     public static TagResponse toResponse(Tag tag){
         return TagResponse.builder()
                 .id(tag.getId())
-                .nome(tag.getNome())
+                .name(tag.getName())
                 .build();
     }
 }

@@ -22,7 +22,7 @@ public class TagService {
     public TagResponse createTag(CreateTag request) {
         log.info("Creating tag: {}", request);
 
-        if (tagRepository.findByName(request.nome()).isPresent()) {
+        if (tagRepository.findByName(request.name()).isPresent()) {
             log.error("Tag already exists");
             throw new IllegalArgumentException("Tag already exists");
         }
@@ -37,5 +37,15 @@ public class TagService {
         return tagRepository.findAll().stream()
                 .map(TagMapper::toResponse)
                 .toList();
+    }
+
+    public void deleteTagById(Long id) {
+        log.info("Deleting tag with id: {}", id);
+
+        if (tagRepository.findById(id).isEmpty()) {
+            log.error("Tag with id: {} not found", id);
+            throw new IllegalArgumentException("Tag not found");
+        }
+        tagRepository.deleteById(id);
     }
 }

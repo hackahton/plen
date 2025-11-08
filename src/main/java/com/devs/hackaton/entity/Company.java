@@ -1,13 +1,12 @@
 package com.devs.hackaton.entity;
 
+import com.devs.hackaton.enums.Company_User_Status;
 import com.devs.hackaton.enums.ProjectStatus;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.validator.constraints.br.CNPJ;
 
+import javax.swing.*;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +15,7 @@ import java.util.UUID;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
 public class Company {
 
     @Id
@@ -27,11 +27,14 @@ public class Company {
     private String cnpj;
 
     @Column(nullable = false)
+    private String nome;
+
+    @Column(nullable = false)
     private String endereco;
 
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
-    private ProjectStatus status;
+    private Company_User_Status status;
 
     @ManyToMany
     @JoinTable(

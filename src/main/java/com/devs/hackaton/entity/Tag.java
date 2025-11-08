@@ -19,7 +19,7 @@ public class Tag {
     private Long id;
 
     @Column(nullable = false)
-    private String nome;
+    private String name;
 
    @ManyToMany
    @JoinTable(name = "tag_user", joinColumns = @JoinColumn(name = "tag_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))

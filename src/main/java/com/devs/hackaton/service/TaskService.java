@@ -1,16 +1,22 @@
 package com.devs.hackaton.service;
 
+import com.devs.hackaton.dto.Task.request.AtribuicaoRequest;
+import com.devs.hackaton.dto.Task.request.Mudanca;
 import com.devs.hackaton.dto.Task.request.MudancaRequest;
 import com.devs.hackaton.dto.Task.request.TaskRequest;
 import com.devs.hackaton.dto.Task.response.TaskResponse;
 import com.devs.hackaton.entity.Task;
 import com.devs.hackaton.entity.User;
+import com.devs.hackaton.enums.Difficulty;
 import com.devs.hackaton.enums.Role;
 import com.devs.hackaton.enums.TaskStatus;
+import com.devs.hackaton.enums.TipoMundaca;
 import com.devs.hackaton.repository.TaskRepository;
 import com.devs.hackaton.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 
 @Service
@@ -42,11 +48,35 @@ public class TaskService {
         return new TaskResponse();
     }
 
-    public void mudarStatus(MudancaRequest request){
+    public void editarTask(MudancaRequest request){
         Task task = taskRepository.findById(request.idTask())
                 .orElseThrow(()-> new IllegalArgumentException("Nao encontrado"));
 
-        task.setStatus(request.status());
+        for (Mudanca mudanca : request.mudancas() ) {
+            switch (mudanca.tipoMundaca()){
+                case TipoMundaca.STATUS -> task.setStatus(mudanca.status());
+                case TipoMundaca.DESCRICAO -> task.setDescription(mudanca.descricao());
+                case TipoMundaca.DIFICUDADE -> task.setDifficulty(mudanca.difficulty());
+                case TipoMundaca.PRAZO -> task.setTerm(mudanca.prazo());
+                case TipoMundaca.TITULO -> task.setTitle(mudanca.titulo());
+                case TipoMundaca.PRIORIDADE -> task.setPriority(mudanca.prioridade());
+                default -> throw new IllegalArgumentException("Tipo de mundanca nao encontrado");
+            }
+        }
+
         taskRepository.save(task);
+    }
+
+    public void atribuirTask(AtribuicaoRequest request){
+        Task task = taskRepository.findById(request.idTask())
+                .orElseThrow(() -> new IllegalArgumentException("Task nao encontrada"));
+
+        User user = userRepository.findById(request.idUser())
+                .orElseThrow(() -> new IllegalArgumentException("User nao encontrado"));
+
+        task.getUsers().add(user);
+        user.getTasks().add(task);
+        taskRepository.save(task);
+        userRepository.save(user);
     }
 }
