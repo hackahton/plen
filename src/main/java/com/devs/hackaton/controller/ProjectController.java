@@ -23,8 +23,8 @@ public class ProjectController {
         this.projectService = projectService;
     }
 
-    @PostMapping
-    public ResponseEntity<CreateProjectResponse> saveProject(CreateProjectRequest request){
-        return ResponseEntity.ok(projectService.saveProject(request));
-    }
+//    @PostMapping
+//    public ResponseEntity<CreateProjectResponse> saveProject(CreateProjectRequest request){
+//        return ResponseEntity.ok(projectService.saveProject(request));
+//    }
 }

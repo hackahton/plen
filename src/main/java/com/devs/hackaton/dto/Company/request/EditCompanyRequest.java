@@ -6,5 +6,5 @@ public class EditCompanyRequest {
 
     String nome;
 
-    String endereco
+    String endereco;
 }

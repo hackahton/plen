@@ -4,6 +4,8 @@ import com.devs.hackaton.dto.UserDTOs.response.UserResponse;
 
 import com.devs.hackaton.entity.User;
 
+import java.util.List;
+
 
 public class UserMapper {
 
@@ -19,6 +21,12 @@ public class UserMapper {
                     .build();
         }
 
+        public static List<UserResponse> toUserResponseList(List<User> users){
+            return users.stream()
+                    .map(UserMapper::toResponse)
+                    .toList();
+        }
+
         public static UserResponse toResponse(User user){
             return UserResponse.builder()
                     .id(user.getId())
@@ -26,10 +34,10 @@ public class UserMapper {
                     .email(user.getEmail())
                     .role(user.getRole())
                     .status(user.getStatus())
-                    .projects(user.getProjects())
-                    .tasks(user.getTasks())
-                    .company(user.getCompany())
-                    .tags(user.getTags())
+                    .projects(ProjectMapper.toProjectResponseList(user.getProjects()))
+                    .tasks(TaskMapper.toTaskResponseList(user.getTasks()))
+                    .company(CompanyMapper.toCompanyResponse(user.getCompany()))
+                    .tags(TagMapper.toTagResponseList(user.getTags()))
                     .build();
         }
     }

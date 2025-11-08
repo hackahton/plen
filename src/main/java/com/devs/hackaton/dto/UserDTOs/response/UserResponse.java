@@ -1,6 +1,10 @@
 package com.devs.hackaton.dto.UserDTOs.response;
 
 
+import com.devs.hackaton.dto.Company.response.CompanyResponse;
+import com.devs.hackaton.dto.Project.response.ProjectResponse;
+import com.devs.hackaton.dto.Tag.response.TagResponse;
+import com.devs.hackaton.dto.Task.response.TaskResponse;
 import com.devs.hackaton.entity.Company;
 import com.devs.hackaton.entity.Project;
 import com.devs.hackaton.entity.Tag;
@@ -17,7 +21,10 @@ public record UserResponse(
         String email,
         Role role,
         Company_User_Status status,
-        Company company
+        CompanyResponse company,
+        List<ProjectResponse> projects,
+        List<TagResponse> tags,
+        List<TaskResponse> tasks
 
 ) {
 }
