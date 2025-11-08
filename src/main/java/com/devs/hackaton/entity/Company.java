@@ -29,7 +29,6 @@ public class Company {
     @Column(nullable = false)
     private String endereco;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private ProjectStatus status;
 
@@ -40,4 +39,7 @@ public class Company {
             inverseJoinColumns = @JoinColumn(name = "project_id")
     )
     private List<Project> projects;
+
+    @OneToMany(mappedBy = "company", cascade = CascadeType.ALL)
+    private List<User> users;
 }
