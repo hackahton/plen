@@ -1,4 +1,4 @@
-package com.devs.hackaton.dto.request;
+package com.devs.hackaton.dto.Task.request;
 
 import com.devs.hackaton.enums.Difficulty;
 import com.devs.hackaton.enums.Priority;
