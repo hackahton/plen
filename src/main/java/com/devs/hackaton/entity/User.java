@@ -48,14 +48,14 @@ public class User {
     private Company_User_Status status;
 
     @ManyToMany(mappedBy = "users")
-    private List<Project> projects = new ArrayList<>();
+    private final List<Project> projects = new ArrayList<>();
 
     @ManyToMany(mappedBy = "users")
-    private List<Task> tasks = new ArrayList<>();
+    private final List<Task> tasks = new ArrayList<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Company company;
 
     @ManyToMany(mappedBy = "users")
-    private List<Tag> tags = new ArrayList<>();
+    private final List<Tag> tags = new ArrayList<>();
 }
