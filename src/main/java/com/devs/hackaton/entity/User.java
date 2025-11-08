@@ -55,6 +55,6 @@ public class User {
     @ManyToOne(cascade = CascadeType.ALL)
     private Company company;
 
-    @ManyToMany(mappedBy = "user")
+    @ManyToMany(mappedBy = "users")
     private List<Tag> tags = new ArrayList<>();
 }

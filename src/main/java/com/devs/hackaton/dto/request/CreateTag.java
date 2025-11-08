@@ -1,7 +1,9 @@
 package com.devs.hackaton.dto.request;
 
+import java.util.UUID;
+
 public record CreateTag(
         String nome,
-        Long userId
+        UUID userId
 ) {
 }

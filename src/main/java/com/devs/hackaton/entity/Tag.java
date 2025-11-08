@@ -23,5 +23,5 @@ public class Tag {
 
    @ManyToMany
    @JoinTable(name = "tag_user", joinColumns = @JoinColumn(name = "tag_id"), inverseJoinColumns = @JoinColumn(name = "user_id"))
-    private List<User> user;
+    private List<User> users;
 }
