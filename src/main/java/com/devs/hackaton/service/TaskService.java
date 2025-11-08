@@ -58,7 +58,7 @@ public class TaskService {
                 .orElseThrow(() -> new IllegalArgumentException("Task nao encontrada"));
 
         User user = userService.findUserEntityById(request.idUser());
-        
+
         task.getUsers().add(userService.findFirstByStatus(Company_User_Status.ACTIVE));
 
         if (!task.getUsers().contains(user)) {
