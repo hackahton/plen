@@ -1,4 +1,4 @@
-package com.devs.hackaton.dto.request;
+package com.devs.hackaton.dto.Tag.request;
 
 import java.util.UUID;
 
